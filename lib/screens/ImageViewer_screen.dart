@@ -2,13 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class ImageViewerScreen extends StatefulWidget {
-  //final List<Widget> products;
-  dynamic data;
+  dynamic images;
 
   ImageViewerScreen({
     super.key,
-    //required this.products,
-    required this.data,
+    required this.images,
   });
 
   @override
@@ -24,13 +22,13 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
         body: Center(
           child: CarouselSlider.builder(
             options: CarouselOptions(),
-            itemCount: widget.data['images'].length,
+            itemCount: widget.images['images'].length,
             itemBuilder:
                 (BuildContext context, int itemIndex, int pageViewIndex) =>
                     SizedBox(
               width: double.infinity,
               child: Image.network(
-                "${widget.data['images'][itemIndex]}",
+                "${widget.images['images'][itemIndex]}",
                 fit: BoxFit.cover,
               ),
             ),

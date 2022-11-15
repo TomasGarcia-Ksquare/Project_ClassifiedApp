@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_project/models/ads.dart';
 import 'package:new_project/screens/CreateAd_screen.dart';
 import 'package:new_project/screens/EditAd_screen.dart';
 import 'package:new_project/screens/EditProfile_screen.dart';
@@ -36,7 +37,7 @@ class RouteGenerator {
       case '/ImageViewerScreen':
         return MaterialPageRoute(
           builder: (context) => ImageViewerScreen(
-            data: args,
+            images: args,
           ),
         );
       case '/EditAdScreen':

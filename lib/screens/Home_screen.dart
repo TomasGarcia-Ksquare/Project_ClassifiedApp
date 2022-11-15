@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project/data/Ads_data.dart';
+import 'package:new_project/models/ads.dart';
+import 'package:new_project/services/ads.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -26,7 +30,99 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: HomeGrid(ads: AdsData().ads),
+        body: FutureBuilder(
+          future: AdsService().getAllAds(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<AdsModel> ads = snapshot.data!;
+              //print(ads[13].images![0]);
+              //print(jsonEncode(ads));
+              return Container(
+                height: double.infinity,
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.7,
+                  ),
+                  itemCount: ads.length,
+                  itemBuilder: (context, index) {
+                    //print(jsonEncode(ads[index]));
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/ProductDetailScreen',
+                          arguments: {'ads': ads[index]},
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            height: double.infinity,
+                            child: Image.network(
+                              ads[index].images![0],
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset('./images/city.jpg');
+                              },
+                            ),
+                            /*Text(
+                                ads[index].images!.isNotEmpty
+                                    ? ads[index].images![0]
+                                    : 'https://www.globalsign.com/application/files/9516/0389/3750/What_Is_an_SSL_Common_Name_Mismatch_Error_-_Blog_Image.jpg',
+                              )*/
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              color: Colors.black.withOpacity(0.5),
+                              width: double.infinity,
+                              //height: 70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(7),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ProductInfo(
+                                      title: ads[index].title!,
+                                      /*ads: ads,
+                                      index: index,
+                                      str: 'title',*/
+                                      txtColor: 0xffffffff,
+                                    ),
+                                    ProductInfo(
+                                      title: ads[index].price!.toString(),
+                                      /*ads: ads,
+                                      index: index,
+                                      str: 'price',*/
+                                      txtColor: 0xfff25723,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Something wrong"),
+              );
+            }
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ), //HomeGrid(ads: AdsData().ads),
         floatingActionButton:
             const CustomFloatingActionButton(icon: Icons.add_a_photo_outlined),
       ),
@@ -58,6 +154,7 @@ class CustomFloatingActionButton extends StatelessWidget {
   }
 }
 
+/*
 class HomeGrid extends StatelessWidget {
   const HomeGrid({
     Key? key,
@@ -135,26 +232,29 @@ class HomeGrid extends StatelessWidget {
     );
   }
 }
-
+*/
 class ProductInfo extends StatelessWidget {
-  final int index;
-  final String str;
+  /*final int index;
+  final String str;*/
   final int txtColor;
 
   const ProductInfo(
       {Key? key,
-      required this.ads,
+      required this.title,
+      /*required this.ads,
       required this.index,
-      required this.str,
+      required this.str,*/
       required this.txtColor})
       : super(key: key);
 
-  final List ads;
+  //final List ads;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      ads[index][str].toString(),
+      title,
+      //ads[index][str].toString(),
       style: TextStyle(
         color: Color(txtColor),
       ),

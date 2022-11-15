@@ -1,31 +1,34 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:new_project/models/ads.dart';
+import 'package:new_project/screens/MyAds_screen.dart';
 import 'package:new_project/widgets/CustomButton_widget.dart';
 
-class ProductDetailScreen extends StatefulWidget {
-  dynamic ads;
+class ProductDetailScreen extends StatelessWidget {
+  Map<String, dynamic> ads; //JSON
+
   ProductDetailScreen({super.key, required this.ads});
-
-  @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
-}
-
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
   //final List products
 
   @override
   Widget build(BuildContext context) {
-    //final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    String adsDecoded = jsonEncode(ads);
+    var data = jsonDecode(adsDecoded);
+    print(data);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductTitle(widget: widget),
-            ProductPrice(widget: widget),
-            ProductImage(widget: widget),
-            ProductInfo(widget: widget),
-            ProductDescription(widget: widget),
+            ProductTitle(title: data['ads']['title']),
+            ProductPrice(price: data['ads']['price']),
+            ProductImage(images: data['ads']['images']),
+            ProductInfo(
+                createdAt: data['ads']['createdAt'],
+                createdBy: data['ads']['authorName']),
+            ProductDescription(description: data['ads']['description']),
             CustomButton(
               str: 'Contact Seller',
               dialNumber: 'tel:+913698521470',
@@ -38,12 +41,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 }
 
 class ProductDescription extends StatelessWidget {
+  final String description;
   const ProductDescription({
     Key? key,
-    required this.widget,
+    required this.description,
   }) : super(key: key);
-
-  final ProductDetailScreen widget;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class ProductDescription extends StatelessWidget {
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: SizedBox(
         child: Expanded(
-          child: Text("${widget.ads['ads']['description']}"),
+          child: Text(description),
         ),
       ),
     );
@@ -59,12 +61,13 @@ class ProductDescription extends StatelessWidget {
 }
 
 class ProductInfo extends StatelessWidget {
+  final String createdBy;
+  final String createdAt;
   const ProductInfo({
     Key? key,
-    required this.widget,
+    required this.createdBy,
+    required this.createdAt,
   }) : super(key: key);
-
-  final ProductDetailScreen widget;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +79,7 @@ class ProductInfo extends StatelessWidget {
             Icons.person_outline,
             size: 20,
           ),
-          Text("${widget.ads['ads']['createdBy']}"),
+          Text(createdBy),
           SizedBox(
             width: 12,
           ),
@@ -84,7 +87,7 @@ class ProductInfo extends StatelessWidget {
             Icons.timer_outlined,
             size: 20,
           ),
-          Text("${widget.ads['ads']['createdAt']}"),
+          Text(createdAt),
         ],
       ),
     );
@@ -92,12 +95,11 @@ class ProductInfo extends StatelessWidget {
 }
 
 class ProductImage extends StatelessWidget {
+  final List images;
   const ProductImage({
     Key? key,
-    required this.widget,
+    required this.images,
   }) : super(key: key);
-
-  final ProductDetailScreen widget;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +108,7 @@ class ProductImage extends StatelessWidget {
         Navigator.pushNamed(
           context,
           '/ImageViewerScreen',
-          arguments: {'images': widget.ads['ads']['images']},
+          arguments: {'images': images},
         );
       },
       child: Container(
@@ -114,7 +116,7 @@ class ProductImage extends StatelessWidget {
         width: double.infinity,
         height: 250,
         child: Image.network(
-          "${widget.ads['ads']['images'][0]}",
+          images[0],
           fit: BoxFit.cover,
         ),
       ),
@@ -123,19 +125,18 @@ class ProductImage extends StatelessWidget {
 }
 
 class ProductPrice extends StatelessWidget {
+  final int price;
   const ProductPrice({
     Key? key,
-    required this.widget,
+    required this.price,
   }) : super(key: key);
-
-  final ProductDetailScreen widget;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: Text(
-        "${widget.ads['ads']['price']}",
+        price.toString(),
         textAlign: TextAlign.start,
         style: TextStyle(color: Color(0xfff25723), fontWeight: FontWeight.bold),
       ),
@@ -144,12 +145,11 @@ class ProductPrice extends StatelessWidget {
 }
 
 class ProductTitle extends StatelessWidget {
+  final String title;
   const ProductTitle({
     Key? key,
-    required this.widget,
+    required this.title,
   }) : super(key: key);
-
-  final ProductDetailScreen widget;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +160,7 @@ class ProductTitle extends StatelessWidget {
         //height: 80,
         child: Expanded(
           child: Text(
-            "${widget.ads['ads']['title']}",
+            title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
