@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:new_project/data/Ads_data.dart';
 import 'package:new_project/models/ads.dart';
 import 'package:new_project/services/ads.dart';
+import 'package:new_project/services/profile.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -22,9 +23,24 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, '/SettingsScreen');
                 },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://pbs.twimg.com/media/FF3ybx2XIAQFja6.jpg'),
+                child: FutureBuilder(
+                  future: ProfileService().fetchUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      Map user = snapshot.data!;
+                      return CircleAvatar(
+                        backgroundImage: NetworkImage(user['imgURL']),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('Error'),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
               ),
             ],

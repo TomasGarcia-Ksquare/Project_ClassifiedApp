@@ -17,40 +17,48 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            //image
-            const LogoImage(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                //image
+                const LogoImage(),
 
-            SizedBox(
-              child: Container(
-                height: 20,
-              ),
+                SizedBox(
+                  child: Container(
+                    height: 20,
+                  ),
+                ),
+
+                // email form
+                CustomTextFieldWidget(
+                    hint: 'Email Address', controller: _emailCtrl),
+
+                CustomTextFieldWidget(
+                    hint: 'Password', controller: _passwordCtrl),
+
+                //button
+                CustomButton(
+                  str: 'Login',
+                  //route: '/HomeScreen',
+                  action: 'login',
+                  email: _emailCtrl,
+                  password: _passwordCtrl,
+                ),
+
+                //text
+                CustomTextButtonWidget(
+                  str: 'Don\'t have any account?',
+                  route: '/RegisterScreen',
+                )
+              ],
             ),
-
-            // email form
-            CustomTextFieldWidget(
-                hint: 'Email Address', controller: _emailCtrl),
-
-            CustomTextFieldWidget(hint: 'Password', controller: _passwordCtrl),
-
-            //button
-            CustomButton(
-              str: 'Login',
-              //route: '/HomeScreen',
-              action: 'login',
-              email: _emailCtrl,
-              password: _passwordCtrl,
-            ),
-
-            //text
-            CustomTextButtonWidget(
-              str: 'Don\'t have any account?',
-              route: '/RegisterScreen',
-            )
-          ],
+          ),
         ),
       ),
     );
