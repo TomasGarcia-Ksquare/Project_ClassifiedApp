@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_project/services/profile.dart';
 import 'package:new_project/widgets/CustomTextButton_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -95,39 +96,54 @@ class ProfileSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 40,
-                margin: EdgeInsets.only(right: 15),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://pbs.twimg.com/media/FF3ybx2XIAQFja6.jpg'),
+    return FutureBuilder(
+      future: ProfileService().fetchUser(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          Map user = snapshot.data!;
+          return Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      margin: EdgeInsets.only(right: 15),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(user['imgURL']),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(user['name']),
+                        Text(user['mobile']),
+                      ],
+                    ),
+                  ],
                 ),
+                /*Text(
+              'Edit',
+              style: TextStyle(
+                color: Color(0xfff25723),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Tomas'),
-                  Text('9999999999'),
-                ],
-              ),
-            ],
-          ),
-          /*Text(
-            'Edit',
-            style: TextStyle(
-              color: Color(0xfff25723),
+            )*/
+                CustomTextButtonWidget(route: '/EditProfileScreen', str: 'Edit')
+              ],
             ),
-          )*/
-          CustomTextButtonWidget(route: '/EditProfileScreen', str: 'Edit')
-        ],
-      ),
+          );
+        }
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text('Error'),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }
