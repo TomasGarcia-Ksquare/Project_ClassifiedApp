@@ -4,8 +4,16 @@ import 'package:new_project/widgets/CustomTextButton_widget.dart';
 import 'package:new_project/widgets/CustomTextField_widget.dart';
 import 'package:new_project/widgets/LogoImage_widget.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _emailCtrl = TextEditingController();
+  TextEditingController _passwordCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +31,18 @@ class LoginScreen extends StatelessWidget {
             ),
 
             // email form
-            const CustomTextFieldWidget(str: '', hint: 'Email Address'),
+            CustomTextFieldWidget(
+                hint: 'Email Address', controller: _emailCtrl),
 
-            const CustomTextFieldWidget(str: '', hint: 'Password'),
+            CustomTextFieldWidget(hint: 'Password', controller: _passwordCtrl),
 
             //button
-            const CustomButton(
+            CustomButton(
               str: 'Login',
-              route: '/HomeScreen',
+              //route: '/HomeScreen',
+              action: 'login',
+              email: _emailCtrl,
+              password: _passwordCtrl,
             ),
 
             //text

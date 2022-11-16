@@ -69,11 +69,6 @@ class HomeScreen extends StatelessWidget {
                                 return Image.asset('./images/city.jpg');
                               },
                             ),
-                            /*Text(
-                                ads[index].images!.isNotEmpty
-                                    ? ads[index].images![0]
-                                    : 'https://www.globalsign.com/application/files/9516/0389/3750/What_Is_an_SSL_Common_Name_Mismatch_Error_-_Blog_Image.jpg',
-                              )*/
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,

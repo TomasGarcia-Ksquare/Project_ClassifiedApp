@@ -29,10 +29,10 @@ class _EditAdScreenState extends State<EditAdScreen> {
           children: [
             NewPhotoWidget(),
             ImagesList(widget: widget),
-            CustomTextFieldWidget(str: widget.ads['title'], hint: ''),
+            /*CustomTextFieldWidget(str: widget.ads['title'], hint: ''),
             CustomTextFieldWidget(
                 str: widget.ads['price'].toString(), hint: ''),
-            CustomTextFieldWidget(str: widget.ads['mobile'], hint: ''),
+            CustomTextFieldWidget(str: widget.ads['mobile'], hint: ''),*/
             CustomTextFieldWidget2(str: widget.ads['description']),
             submitAdButton()
           ],

@@ -29,10 +29,10 @@ class ProductDetailScreen extends StatelessWidget {
                 createdAt: data['ads']['createdAt'],
                 createdBy: data['ads']['authorName']),
             ProductDescription(description: data['ads']['description']),
-            CustomButton(
+            /*CustomButton(
               str: 'Contact Seller',
               dialNumber: 'tel:+913698521470',
-            )
+            )*/
           ],
         ),
       ),

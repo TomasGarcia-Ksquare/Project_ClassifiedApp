@@ -20,17 +20,17 @@ class CreateAdScreen extends StatelessWidget {
         body: Column(
           children: [
             NewPhotoWidget(),
-            CustomTextFieldWidget(str: '', hint: 'Title'),
+            /*CustomTextFieldWidget(str: '', hint: 'Title'),
             CustomTextFieldWidget(str: '', hint: 'Price'),
-            CustomTextFieldWidget(str: '', hint: 'Contact Number'),
+            CustomTextFieldWidget(str: '', hint: 'Contact Number'),*/
             CustomTextFieldWidget2(str: ''),
             SizedBox(
               height: 20,
             ),
-            CustomButton(
+            /*CustomButton(
               str: 'Submit Ad',
               route: '/MyAdsScreen',
-            )
+            )*/
           ],
         ),
       ),

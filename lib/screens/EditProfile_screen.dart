@@ -29,10 +29,10 @@ class EditProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            CustomTextFieldWidget(str: 'Tomas', hint: ''),
+            /*CustomTextFieldWidget(str: 'Tomas', hint: ''),
             CustomTextFieldWidget(str: 'tomas@mail.com', hint: ''),
-            CustomTextFieldWidget(str: '+529999999999', hint: ''),
-            CustomButton(str: 'Update Profile', route: '/SettingsScreen'),
+            CustomTextFieldWidget(str: '+529999999999', hint: ''),*/
+            //CustomButton(str: 'Update Profile', route: '/SettingsScreen'),
             SizedBox(
               child: Container(
                 height: 20,
