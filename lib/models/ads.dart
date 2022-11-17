@@ -2,7 +2,7 @@ class AdsModel {
   String? sId;
   String? title;
   String? description;
-  int? price;
+  num? price;
   List<String>? images;
   String? authorName;
   String? userId;

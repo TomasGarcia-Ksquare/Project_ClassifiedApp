@@ -48,7 +48,14 @@ class EditProfileScreen extends StatelessWidget {
                       hint: _emailCtrl.text, controller: _emailCtrl),
                   CustomTextFieldWidget(
                       hint: _mobileCtrl.text, controller: _mobileCtrl),
-                  //CustomButton(str: 'Update Profile', route: '/SettingsScreen'),
+                  CustomButton(
+                    str: 'Update Profile',
+                    action: 'edit',
+                    name: _nameCtrl,
+                    email: _emailCtrl,
+                    mobile: _mobileCtrl,
+                    imgURL: user['imgURL'],
+                  ),
                   SizedBox(
                     child: Container(
                       height: 20,
