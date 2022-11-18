@@ -15,7 +15,7 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String adsDecoded = jsonEncode(ads);
     var data = jsonDecode(adsDecoded);
-    print(data);
+    //print(data);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),

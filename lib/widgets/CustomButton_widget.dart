@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:new_project/models/ads.dart';
 import 'package:new_project/models/edit_user.dart';
 import 'package:new_project/models/user.dart';
+import 'package:new_project/services/ads.dart';
 import 'package:new_project/services/auth.dart';
 import 'package:new_project/services/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,6 +17,11 @@ class CustomButton extends StatelessWidget {
   TextEditingController? name;
   TextEditingController? mobile;
   String? imgURL;
+  TextEditingController? title;
+  TextEditingController? price;
+  TextEditingController? description;
+  String? id;
+  List<String>? images;
 
   _openURL(url) async {
     url = Uri.parse(url);
@@ -25,17 +32,23 @@ class CustomButton extends StatelessWidget {
     }
   }
 
-  CustomButton(
-      {super.key,
-      required this.str,
-      this.route,
-      this.dialNumber,
-      required this.action,
-      this.email,
-      this.password,
-      this.name,
-      this.mobile,
-      this.imgURL});
+  CustomButton({
+    super.key,
+    required this.str,
+    this.route,
+    this.dialNumber,
+    required this.action,
+    this.email,
+    this.password,
+    this.name,
+    this.mobile,
+    this.imgURL,
+    this.title,
+    this.price,
+    this.description,
+    this.id,
+    this.images,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +83,29 @@ class CustomButton extends StatelessWidget {
                   imgURL: imgURL!,
                 );
                 ProfileService().updateUser(context, user);
+                break;
+              case 'editAd':
+                print('editAd case');
+                AdsModel ad = AdsModel(
+                  sId: id,
+                  title: title!.text,
+                  description: description!.text,
+                  price: int.parse(price!.text),
+                  images: images,
+                  mobile: mobile!.text,
+                );
+                AdsService().updateAd(context, ad);
+                break;
+              case 'createAd':
+                print('createAd case');
+                AdsModel ad = AdsModel(
+                  title: title!.text,
+                  description: description!.text,
+                  price: int.parse(price!.text),
+                  images: images,
+                  mobile: mobile!.text,
+                );
+                AdsService().createAd(context, ad);
                 break;
               default:
             }

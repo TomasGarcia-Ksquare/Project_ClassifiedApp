@@ -40,4 +40,49 @@ class AdsService {
       return ads;
     }
   }
+
+  void updateAd(context, AdsModel ad) async {
+    print('updateAd');
+    var storage = FlutterSecureStorage();
+    var token = await storage.read(key: 'token');
+    var url = Uri.parse("https://adlisting.herokuapp.com/ads/${ad.sId}");
+    var adObj = ad.toJson();
+    var body = jsonEncode(adObj);
+    try {
+      var resp = await http.patch(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: body,
+      );
+      print(body);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void createAd(context, AdsModel ad) async {
+    var storage = FlutterSecureStorage();
+    var url = Uri.parse("https://adlisting.herokuapp.com/ads");
+    var token = await storage.read(key: 'token');
+    var userObj = ad.toJson();
+    var body = jsonEncode(userObj);
+    try {
+      var resp = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: body,
+      );
+
+      //Navigator.pushReplacementNamed(context, '/');
+
+    } catch (e) {
+      print(e);
+    }
+  }
 }

@@ -41,8 +41,8 @@ class Ads extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
-                    /*Navigator.pushNamed(context, '/EditAdScreen',
-                  arguments: ads.myAds()[index]);*/
+                    Navigator.pushNamed(context, '/EditAdScreen',
+                        arguments: {'ads': ads[index]});
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
