@@ -108,6 +108,7 @@ class _EditAdScreenState extends State<EditAdScreen> {
               mobile: _mobileCtrl,
               images: currentImages,
               description: _descriptionCtrl,
+              isLoading: false,
             )
           ],
         ),

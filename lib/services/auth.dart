@@ -9,7 +9,7 @@ import 'package:new_project/services/profile.dart';
 import 'package:new_project/utils/alert_manager.dart';
 
 class AuthService {
-  void register(context, UserModel user) async {
+  register(context, UserModel user) async {
     var url = Uri.parse("https://adlisting.herokuapp.com/auth/register");
 
     ///print(url);
@@ -29,7 +29,7 @@ class AuthService {
     }
   }
 
-  void login(context, UserModel user) async {
+  login(context, UserModel user) async {
     var storage = FlutterSecureStorage();
     var url = Uri.parse("https://adlisting.herokuapp.com/auth/login");
     //print(url);

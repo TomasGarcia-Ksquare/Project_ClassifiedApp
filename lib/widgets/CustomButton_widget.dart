@@ -7,7 +7,7 @@ import 'package:new_project/services/auth.dart';
 import 'package:new_project/services/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CustomButton extends StatelessWidget {
+class CustomButton extends StatefulWidget {
   final String str;
   final String? route;
   final String? dialNumber;
@@ -22,15 +22,7 @@ class CustomButton extends StatelessWidget {
   TextEditingController? description;
   String? id;
   List<String>? images;
-
-  _openURL(url) async {
-    url = Uri.parse(url);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      print("Error");
-    }
-  }
+  bool? isLoading;
 
   CustomButton({
     super.key,
@@ -48,7 +40,58 @@ class CustomButton extends StatelessWidget {
     this.description,
     this.id,
     this.images,
+    this.isLoading = false,
   });
+
+  @override
+  State<CustomButton> createState() => _CustomButtonState();
+}
+
+class _CustomButtonState extends State<CustomButton> {
+  _openURL(url) async {
+    url = Uri.parse(url);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      print("Error");
+    }
+  }
+
+  waitForResp(caseIndex, data) async {
+    switch (caseIndex) {
+      case 'login':
+        await AuthService().login(context, data);
+        setState(() {
+          widget.isLoading = false;
+        });
+        break;
+      case 'register':
+        await AuthService().register(context, data);
+        setState(() {
+          widget.isLoading = false;
+        });
+        break;
+      case 'editProfile':
+        await ProfileService().updateUser(context, data);
+        setState(() {
+          widget.isLoading = false;
+        });
+        break;
+      case 'editAd':
+        await AdsService().updateAd(context, data);
+        setState(() {
+          widget.isLoading = false;
+        });
+        break;
+      case 'createAd':
+        await AdsService().createAd(context, data);
+        setState(() {
+          widget.isLoading = false;
+        });
+        break;
+      default:
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,53 +107,77 @@ class CustomButton extends StatelessWidget {
             } else {
               Navigator.pushReplacementNamed(context, route!);
             }*/
-            switch (action) {
+            setState(() {
+              widget.isLoading = true;
+            });
+            switch (widget.action) {
               case 'login':
-                print('login case');
+                //print('login case');
                 UserModel user = UserModel(
-                  email: email!.text,
-                  password: password!.text,
+                  email: widget.email!.text,
+                  password: widget.password!.text,
                 );
-                print(user.toJson());
-                AuthService().login(context, user);
+                //print(user.toJson());
+                //AuthService().login(context, user);
+                waitForResp(widget.action, user);
                 break;
-              case 'edit':
-                print('edit case');
+              case 'editProfile':
+                //print('edit case');
                 EditUserModel user = EditUserModel(
-                  name: name!.text,
-                  email: email!.text,
-                  mobile: mobile!.text,
-                  imgURL: imgURL!,
+                  name: widget.name!.text,
+                  email: widget.email!.text,
+                  mobile: widget.mobile!.text,
+                  imgURL: widget.imgURL!,
                 );
-                ProfileService().updateUser(context, user);
+                //ProfileService().updateUser(context, user);
+                waitForResp(widget.action, user);
                 break;
               case 'editAd':
-                print('editAd case');
+                //print('editAd case');
                 AdsModel ad = AdsModel(
-                  sId: id,
-                  title: title!.text,
-                  description: description!.text,
-                  price: int.parse(price!.text),
-                  images: images,
-                  mobile: mobile!.text,
+                  sId: widget.id,
+                  title: widget.title!.text,
+                  description: widget.description!.text,
+                  price: int.parse(widget.price!.text),
+                  images: widget.images,
+                  mobile: widget.mobile!.text,
                 );
-                AdsService().updateAd(context, ad);
+                //AdsService().updateAd(context, ad);
+                waitForResp(widget.action, ad);
                 break;
               case 'createAd':
-                print('createAd case');
+                //print('createAd case');
                 AdsModel ad = AdsModel(
-                  title: title!.text,
-                  description: description!.text,
-                  price: int.parse(price!.text),
-                  images: images,
-                  mobile: mobile!.text,
+                  title: widget.title!.text,
+                  description: widget.description!.text,
+                  price: int.parse(widget.price!.text),
+                  images: widget.images,
+                  mobile: widget.mobile!.text,
                 );
-                AdsService().createAd(context, ad);
+                //AdsService().createAd(context, ad);
+                waitForResp(widget.action, ad);
+                break;
+              case 'register':
+                UserModel user = UserModel(
+                  name: widget.name!.text,
+                  email: widget.email!.text,
+                  password: widget.password!.text,
+                  mobile: widget.mobile!.text,
+                );
+                waitForResp(widget.action, user);
+                break;
+              case 'dialNumber':
+                _openURL(widget.dialNumber);
+                print('1 ${widget.dialNumber}');
                 break;
               default:
             }
           },
-          child: Text(str),
+          child: widget.isLoading!
+              ? CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : Text(widget.str),
         ),
       ),
     );

@@ -15,7 +15,7 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String adsDecoded = jsonEncode(ads);
     var data = jsonDecode(adsDecoded);
-    //print(data);
+    //print(data['ads']['mobile']);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
@@ -33,6 +33,11 @@ class ProductDetailScreen extends StatelessWidget {
               str: 'Contact Seller',
               dialNumber: 'tel:+913698521470',
             )*/
+            CustomButton(
+              str: 'Contact Seller',
+              action: 'dialNumber',
+              dialNumber: data['ads']['mobile'],
+            )
           ],
         ),
       ),

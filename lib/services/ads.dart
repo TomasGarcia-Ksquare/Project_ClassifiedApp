@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_project/models/ads.dart';
+import 'package:new_project/utils/alert_manager.dart';
 
 class AdsService {
   Future<List<AdsModel>> getAllAds() async {
@@ -41,8 +43,8 @@ class AdsService {
     }
   }
 
-  void updateAd(context, AdsModel ad) async {
-    print('updateAd');
+  updateAd(context, AdsModel ad) async {
+    //print('updateAd');
     var storage = FlutterSecureStorage();
     var token = await storage.read(key: 'token');
     var url = Uri.parse("https://adlisting.herokuapp.com/ads/${ad.sId}");
@@ -57,13 +59,20 @@ class AdsService {
         },
         body: body,
       );
-      print(body);
+      var respObj = jsonDecode(resp.body);
+      //print(respObj);
+      if (respObj['status'] == false) {
+        AlertManager().displaySnackbar(context, 'Fail');
+      } else {
+        AlertManager().displaySnackbar(context, 'Success');
+        Navigator.pushReplacementNamed(context, '/MyAdsScreen');
+      }
     } catch (e) {
       print(e);
     }
   }
 
-  void createAd(context, AdsModel ad) async {
+  createAd(context, AdsModel ad) async {
     var storage = FlutterSecureStorage();
     var url = Uri.parse("https://adlisting.herokuapp.com/ads");
     var token = await storage.read(key: 'token');
@@ -78,9 +87,13 @@ class AdsService {
         },
         body: body,
       );
-
-      //Navigator.pushReplacementNamed(context, '/');
-
+      var respObj = jsonDecode(resp.body);
+      if (respObj['status'] == false) {
+        AlertManager().displaySnackbar(context, 'Fail');
+      } else {
+        AlertManager().displaySnackbar(context, 'Success');
+        Navigator.pushReplacementNamed(context, '/HomeScreen');
+      }
     } catch (e) {
       print(e);
     }

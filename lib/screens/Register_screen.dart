@@ -18,7 +18,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _nameCtrl = TextEditingController();
   TextEditingController _emailCtrl = TextEditingController();
   TextEditingController _passwordCtrl = TextEditingController();
-  TextEditingController _phoneCtrl = TextEditingController();
+  TextEditingController _mobileCtrl = TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
             //txt field
             CustomTextFieldWidget(
-                hint: 'Mobile Number', controller: _phoneCtrl),
+                hint: 'Mobile Number', controller: _mobileCtrl),
 
             //txt field
             CustomTextFieldWidget(hint: 'Password', controller: _passwordCtrl),
@@ -54,11 +55,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
               str: 'Register Now',
               route: '/HomeScreen',
             ),*/
-            RegisterButton(
+            /* RegisterButton(
                 name: _nameCtrl,
                 email: _emailCtrl,
                 password: _passwordCtrl,
-                phone: _phoneCtrl),
+                phone: _phoneCtrl),*/
+
+            CustomButton(
+              str: 'Register Now',
+              action: 'register',
+              name: _nameCtrl,
+              email: _emailCtrl,
+              password: _passwordCtrl,
+              mobile: _mobileCtrl,
+              isLoading: isLoading,
+            ),
 
             //txt
             CustomTextButtonWidget(

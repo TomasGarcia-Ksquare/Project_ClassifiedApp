@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_project/models/edit_user.dart';
 import 'package:new_project/models/user.dart';
+import 'package:new_project/utils/alert_manager.dart';
 
 class ProfileService {
   Future<Map> fetchUser() async {
@@ -30,8 +32,8 @@ class ProfileService {
     return userData;
   }
 
-  void updateUser(contex, EditUserModel user) async {
-    print('updateUser');
+  updateUser(context, EditUserModel user) async {
+    //print('updateUser');
     var storage = FlutterSecureStorage();
     var url = Uri.parse("https://adlisting.herokuapp.com/user");
     var token = await storage.read(key: 'token');
@@ -46,8 +48,13 @@ class ProfileService {
         },
         body: body,
       );
-      print(body);
-      //Navigator.pushReplacementNamed(context, '/SettingsScreen');
+      var respObj = jsonDecode(resp.body);
+      if (respObj['status'] == false) {
+        AlertManager().displaySnackbar(context, 'Fail');
+      } else {
+        AlertManager().displaySnackbar(context, 'Success');
+        Navigator.pushReplacementNamed(context, '/SettingsScreen');
+      }
     } catch (e) {
       print(e);
     }
