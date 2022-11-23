@@ -66,6 +66,7 @@ class AdsService {
       } else {
         AlertManager().displaySnackbar(context, 'Success');
         Navigator.pushReplacementNamed(context, '/MyAdsScreen');
+        //Navigator.pop(context);
       }
     } catch (e) {
       print(e);

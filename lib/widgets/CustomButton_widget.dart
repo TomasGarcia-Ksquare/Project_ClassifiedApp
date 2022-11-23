@@ -5,6 +5,7 @@ import 'package:new_project/models/user.dart';
 import 'package:new_project/services/ads.dart';
 import 'package:new_project/services/auth.dart';
 import 'package:new_project/services/profile.dart';
+import 'package:new_project/utils/alert_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomButton extends StatefulWidget {
@@ -53,41 +54,94 @@ class _CustomButtonState extends State<CustomButton> {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
+      // ignore: avoid_print
       print("Error");
     }
   }
 
-  waitForResp(caseIndex, data) async {
+  buttonCase(caseIndex) async {
     switch (caseIndex) {
       case 'login':
-        await AuthService().login(context, data);
+        UserModel user = UserModel(
+          email: widget.email!.text,
+          password: widget.password!.text,
+        );
+        await AuthService().login(context, user);
         setState(() {
           widget.isLoading = false;
         });
         break;
       case 'register':
-        await AuthService().register(context, data);
-        setState(() {
-          widget.isLoading = false;
-        });
+        UserModel user = UserModel(
+          name: widget.name!.text,
+          email: widget.email!.text,
+          password: widget.password!.text,
+          mobile: widget.mobile!.text,
+        );
+        if (user.name!.isEmpty ||
+            user.email!.isEmpty ||
+            user.mobile!.isEmpty ||
+            user.password!.isEmpty) {
+          AlertManager().displaySnackbar(context, 'Fail');
+          setState(() {
+            widget.isLoading = false;
+          });
+        } else {
+          await AuthService().register(context, user);
+          setState(() {
+            widget.isLoading = false;
+          });
+        }
         break;
       case 'editProfile':
-        await ProfileService().updateUser(context, data);
-        setState(() {
-          widget.isLoading = false;
-        });
+        EditUserModel user = EditUserModel(
+          name: widget.name!.text,
+          email: widget.email!.text,
+          mobile: widget.mobile!.text,
+          imgURL: widget.imgURL!,
+        );
+        if (user.email!.isEmpty) {
+          AlertManager().displaySnackbar(context, 'Fail');
+          setState(() {
+            widget.isLoading = false;
+          });
+        } else {
+          await ProfileService().updateUser(context, user);
+          setState(() {
+            widget.isLoading = false;
+          });
+        }
         break;
       case 'editAd':
-        await AdsService().updateAd(context, data);
+        AdsModel ad = AdsModel(
+          sId: widget.id,
+          title: widget.title!.text,
+          description: widget.description!.text,
+          price: int.parse(widget.price!.text),
+          images: widget.images,
+          mobile: widget.mobile!.text,
+        );
+        await AdsService().updateAd(context, ad);
         setState(() {
           widget.isLoading = false;
         });
         break;
       case 'createAd':
-        await AdsService().createAd(context, data);
+        AdsModel ad = AdsModel(
+          title: widget.title!.text,
+          description: widget.description!.text,
+          price: int.parse(widget.price!.text),
+          images: widget.images,
+          mobile: widget.mobile!.text,
+        );
+        await AdsService().createAd(context, ad);
         setState(() {
           widget.isLoading = false;
         });
+        break;
+      case 'dialNumber':
+        _openURL(widget.dialNumber);
+        print('1 ${widget.dialNumber}');
         break;
       default:
     }
@@ -102,76 +156,10 @@ class _CustomButtonState extends State<CustomButton> {
         height: 45,
         child: ElevatedButton(
           onPressed: () {
-            /*if (route == null && dialNumber != null) {
-              _openURL(dialNumber);
-            } else {
-              Navigator.pushReplacementNamed(context, route!);
-            }*/
             setState(() {
               widget.isLoading = true;
             });
-            switch (widget.action) {
-              case 'login':
-                //print('login case');
-                UserModel user = UserModel(
-                  email: widget.email!.text,
-                  password: widget.password!.text,
-                );
-                //print(user.toJson());
-                //AuthService().login(context, user);
-                waitForResp(widget.action, user);
-                break;
-              case 'editProfile':
-                //print('edit case');
-                EditUserModel user = EditUserModel(
-                  name: widget.name!.text,
-                  email: widget.email!.text,
-                  mobile: widget.mobile!.text,
-                  imgURL: widget.imgURL!,
-                );
-                //ProfileService().updateUser(context, user);
-                waitForResp(widget.action, user);
-                break;
-              case 'editAd':
-                //print('editAd case');
-                AdsModel ad = AdsModel(
-                  sId: widget.id,
-                  title: widget.title!.text,
-                  description: widget.description!.text,
-                  price: int.parse(widget.price!.text),
-                  images: widget.images,
-                  mobile: widget.mobile!.text,
-                );
-                //AdsService().updateAd(context, ad);
-                waitForResp(widget.action, ad);
-                break;
-              case 'createAd':
-                //print('createAd case');
-                AdsModel ad = AdsModel(
-                  title: widget.title!.text,
-                  description: widget.description!.text,
-                  price: int.parse(widget.price!.text),
-                  images: widget.images,
-                  mobile: widget.mobile!.text,
-                );
-                //AdsService().createAd(context, ad);
-                waitForResp(widget.action, ad);
-                break;
-              case 'register':
-                UserModel user = UserModel(
-                  name: widget.name!.text,
-                  email: widget.email!.text,
-                  password: widget.password!.text,
-                  mobile: widget.mobile!.text,
-                );
-                waitForResp(widget.action, user);
-                break;
-              case 'dialNumber':
-                _openURL(widget.dialNumber);
-                print('1 ${widget.dialNumber}');
-                break;
-              default:
-            }
+            buttonCase(widget.action);
           },
           child: widget.isLoading!
               ? CircularProgressIndicator(

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:new_project/screens/EditAd_screen.dart';
 import 'package:new_project/widgets/CustomButton_widget.dart';
 import 'package:new_project/widgets/CustomTextField2_widget.dart';
 import 'package:new_project/widgets/CustomTextField_widget.dart';
+import 'package:new_project/widgets/custom_images_list_widget.dart';
 import '../widgets/NewPhoto_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -54,44 +54,44 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
       }
     }
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Align(
-            alignment: Alignment.center,
-            child: Text('Create Ad'),
-          ),
-        ),
-        body: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                captureImageFromGallery();
-              },
-              child: NewPhotoWidget(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Align(
+              alignment: Alignment.center,
+              child: Text('Create Ad'),
             ),
-            ImagesList(images: currentImages),
-            CustomTextFieldWidget(controller: _titleCtrl, hint: 'Title'),
-            CustomTextFieldWidget(controller: _priceCtrl, hint: 'Price'),
-            CustomTextFieldWidget(controller: _mobileCtrl, hint: 'Mobile'),
-            CustomTextFieldWidget2(controller: _descriptionCtrl),
-            CustomButton(
-              str: 'Submit Ad',
-              action: 'createAd',
-              title: _titleCtrl,
-              price: _priceCtrl,
-              mobile: _mobileCtrl,
-              images: currentImages,
-              description: _descriptionCtrl,
-            )
-            /*SizedBox(
-              height: 20,
-            ),*/
-            /*CustomButton(
-              str: 'Submit Ad',
-              route: '/MyAdsScreen',
-            )*/
-          ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    captureImageFromGallery();
+                  },
+                  child: NewPhotoWidget(),
+                ),
+                ImagesList(images: currentImages),
+                CustomTextFieldWidget(controller: _titleCtrl, hint: 'Title'),
+                CustomTextFieldWidget(controller: _priceCtrl, hint: 'Price'),
+                CustomTextFieldWidget(controller: _mobileCtrl, hint: 'Mobile'),
+                CustomTextFieldWidget2(controller: _descriptionCtrl),
+                CustomButton(
+                  str: 'Submit Ad',
+                  action: 'createAd',
+                  title: _titleCtrl,
+                  price: _priceCtrl,
+                  mobile: _mobileCtrl,
+                  images: currentImages,
+                  description: _descriptionCtrl,
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

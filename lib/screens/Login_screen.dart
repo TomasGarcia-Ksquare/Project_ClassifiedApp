@@ -4,17 +4,11 @@ import 'package:new_project/widgets/CustomTextButton_widget.dart';
 import 'package:new_project/widgets/CustomTextField_widget.dart';
 import 'package:new_project/widgets/LogoImage_widget.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailCtrl = TextEditingController();
   TextEditingController _passwordCtrl = TextEditingController();
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   action: 'login',
                   email: _emailCtrl,
                   password: _passwordCtrl,
-                  isLoading: isLoading,
+                  isLoading: false,
                 ),
 
                 //text

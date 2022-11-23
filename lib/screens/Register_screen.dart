@@ -7,81 +7,83 @@ import 'package:new_project/widgets/CustomTextButton_widget.dart';
 import 'package:new_project/widgets/LogoImage_widget.dart';
 import 'package:new_project/widgets/CustomTextField_widget.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
 
-  @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController _nameCtrl = TextEditingController();
-  TextEditingController _emailCtrl = TextEditingController();
-  TextEditingController _passwordCtrl = TextEditingController();
-  TextEditingController _mobileCtrl = TextEditingController();
-  bool isLoading = false;
+  final TextEditingController _nameCtrl = TextEditingController();
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _passwordCtrl = TextEditingController();
+  final TextEditingController _mobileCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            //image
-            const LogoImage(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                //image
+                const LogoImage(),
 
-            SizedBox(
-              child: Container(
-                height: 20,
-              ),
+                SizedBox(
+                  child: Container(
+                    height: 20,
+                  ),
+                ),
+
+                //txt field
+                CustomTextFieldWidget(hint: 'Full Name', controller: _nameCtrl),
+
+                //txt field
+                CustomTextFieldWidget(
+                    hint: 'Email Address', controller: _emailCtrl),
+
+                //txt field
+                CustomTextFieldWidget(
+                    hint: 'Mobile Number', controller: _mobileCtrl),
+
+                //txt field
+                CustomTextFieldWidget(
+                    hint: 'Password', controller: _passwordCtrl),
+
+                //button
+                /*const CustomButton(
+                  str: 'Register Now',
+                  route: '/HomeScreen',
+                ),*/
+                /* RegisterButton(
+                    name: _nameCtrl,
+                    email: _emailCtrl,
+                    password: _passwordCtrl,
+                    phone: _phoneCtrl),*/
+
+                CustomButton(
+                  str: 'Register Now',
+                  action: 'register',
+                  name: _nameCtrl,
+                  email: _emailCtrl,
+                  password: _passwordCtrl,
+                  mobile: _mobileCtrl,
+                  isLoading: false,
+                ),
+
+                //txt
+                const CustomTextButtonWidget(
+                    route: '/LoginScreen', str: 'Already have an account?')
+              ],
             ),
-
-            //txt field
-            CustomTextFieldWidget(hint: 'Full Name', controller: _nameCtrl),
-
-            //txt field
-            CustomTextFieldWidget(
-                hint: 'Email Address', controller: _emailCtrl),
-
-            //txt field
-            CustomTextFieldWidget(
-                hint: 'Mobile Number', controller: _mobileCtrl),
-
-            //txt field
-            CustomTextFieldWidget(hint: 'Password', controller: _passwordCtrl),
-
-            //button
-            /*const CustomButton(
-              str: 'Register Now',
-              route: '/HomeScreen',
-            ),*/
-            /* RegisterButton(
-                name: _nameCtrl,
-                email: _emailCtrl,
-                password: _passwordCtrl,
-                phone: _phoneCtrl),*/
-
-            CustomButton(
-              str: 'Register Now',
-              action: 'register',
-              name: _nameCtrl,
-              email: _emailCtrl,
-              password: _passwordCtrl,
-              mobile: _mobileCtrl,
-              isLoading: isLoading,
-            ),
-
-            //txt
-            CustomTextButtonWidget(
-                route: '/LoginScreen', str: 'Already have an account?')
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-class RegisterButton extends StatelessWidget {
+/*class RegisterButton extends StatelessWidget {
   TextEditingController name;
   TextEditingController email;
   TextEditingController password;
@@ -123,3 +125,4 @@ class RegisterButton extends StatelessWidget {
     );
   }
 }
+*/

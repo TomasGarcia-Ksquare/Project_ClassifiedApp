@@ -8,6 +8,7 @@ import 'package:new_project/widgets/CustomTextField2_widget.dart';
 import 'package:new_project/widgets/NewPhoto_widget.dart';
 import 'package:new_project/widgets/CustomTextField_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_project/widgets/custom_images_list_widget.dart';
 
 class EditAdScreen extends StatefulWidget {
   dynamic ads;
@@ -77,40 +78,47 @@ class _EditAdScreenState extends State<EditAdScreen> {
     }
     //print(data['ads']['_id']);
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Align(
-            alignment: Alignment.center,
-            child: (Text('Edit Ad')),
-          ),
-        ),
-        body: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                captureImageFromGallery();
-              },
-              child: NewPhotoWidget(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Align(
+              alignment: Alignment.center,
+              child: (Text('Edit Ad')),
             ),
-            ImagesList(images: currentImages!),
-            CustomTextFieldWidget(controller: _titleCtrl, hint: ''),
-            CustomTextFieldWidget(controller: _priceCtrl, hint: ''),
-            CustomTextFieldWidget(controller: _mobileCtrl, hint: ''),
-            CustomTextFieldWidget2(controller: _descriptionCtrl),
-            //submitAdButton()
-            CustomButton(
-              str: 'Submit Ad',
-              action: 'editAd',
-              id: widget.ads['ads'].sId!,
-              title: _titleCtrl,
-              price: _priceCtrl,
-              mobile: _mobileCtrl,
-              images: currentImages,
-              description: _descriptionCtrl,
-              isLoading: false,
-            )
-          ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    captureImageFromGallery();
+                  },
+                  child: NewPhotoWidget(),
+                ),
+                ImagesList(images: currentImages!),
+                CustomTextFieldWidget(controller: _titleCtrl, hint: ''),
+                CustomTextFieldWidget(controller: _priceCtrl, hint: ''),
+                CustomTextFieldWidget(controller: _mobileCtrl, hint: ''),
+                CustomTextFieldWidget2(controller: _descriptionCtrl),
+                //submitAdButton()
+                CustomButton(
+                  str: 'Submit Ad',
+                  action: 'editAd',
+                  id: widget.ads['ads'].sId!,
+                  title: _titleCtrl,
+                  price: _priceCtrl,
+                  mobile: _mobileCtrl,
+                  images: currentImages,
+                  description: _descriptionCtrl,
+                  isLoading: false,
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -139,47 +147,3 @@ class _EditAdScreenState extends State<EditAdScreen> {
     );
   }
 }*/
-
-class ImagesList extends StatelessWidget {
-  final List images;
-
-  const ImagesList({
-    Key? key,
-    required this.images,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (images.isNotEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: images.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Image.network(
-                      images[index],
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      );
-    }
-    return Container();
-  }
-}
